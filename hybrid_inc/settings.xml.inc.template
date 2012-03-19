@@ -2,7 +2,7 @@
 Settings for symbols, the spatial reference of your postgis tables, coastline shapefiles directory, and their prefix names.
 -->
 
-<!-- use 'symbols' unless you have moved the symbols directory -->
+<!-- use 'hybrid_symbols' unless you have moved the symbols directory -->
 <!ENTITY symbols "%(symbols)s">
 
 <!-- use the '&srs900913;' entity if you have called osm2pgsql without special flags (or with -m); use '&srs4326;' if you have used -l -->
