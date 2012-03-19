@@ -830,7 +830,7 @@
            when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en"
            else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')'
       end as name,
-        case when population > 0 then population else -1 end as population
+        case when CAST(population as integer) &gt; 0 then CAST(population as integer) else -1 end as population
        from &prefix;_point
        where place in ('country')
 order by population desc) as countries
@@ -849,7 +849,7 @@ order by population desc) as countries
            when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en"
            else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')'
       end as name,
-        case when population &gt; 0 then population
+        case when CAST(population as integer) &gt; 0 then CAST(population as integer)
         else -1 end as population
           from &prefix;_point
           where place in ('city','metropolis')
@@ -872,7 +872,7 @@ order by population desc) as countries
 	   when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en" 
 	   else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')' 
       end as name,
-	ref, case when population > 0 then population else -1 end as population
+	ref, case when CAST(population as integer) &gt; 0 then CAST(population as integer) else -1 end as population
        from &prefix;_point
        where place in ('county','state')) as placenames
 	  </Parameter>
@@ -905,15 +905,15 @@ order by population desc) as countries
            when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en"
            else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')'
       end as name,
-        case when population &gt; 0 then population
+        case when CAST(population as integer) &gt; 0 then CAST(population as integer)
         else -1 end as population,
-        case when state_capital = 'yes' then 'yes'
+        case when (tags->'state_capital' = 'yes') then 'yes'
         else 'no' end as state_capital
           from &prefix;_point
           where place in ('city','metropolis')
           and (capital is null or capital&lt;&gt;'yes')
           and length(name) &gt; 0
-	  and population &gt;= 100000
+	  and CAST(population as integer) &gt;= 100000
         order by population desc
       ) as placenames</Parameter>
         &datasource-settings;
@@ -930,15 +930,15 @@ order by population desc) as countries
            when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en"
            else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')'
       end as name,
-	case when population &gt; 0 then population
+	case when CAST(population as integer) &gt; 0 then CAST(population as integer)
         else -1 end as population,
-        case when state_capital = 'yes' then 'yes'
+        case when (tags->'state_capital' = 'yes') then 'yes'
         else 'no' end as state_capital
           from &prefix;_point
           where place in ('city','metropolis')
           and (capital is null or capital&lt;&gt;'yes')
 	  and length(name) &gt; 0
-	  and (population is null or population &lt; 100000)
+	  and (population is null or CAST(population as integer) &lt; 100000)
 	order by population desc
       ) as placenames</Parameter>
         &datasource-settings;
@@ -955,9 +955,9 @@ order by population desc) as countries
            when name is null then "name:en" 
 	   when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en" 
 	   else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')' 
-      end as name, case when population > 0 then population
+      end as name, case when CAST(population as integer) &gt; 0 then CAST(population as integer)
         else -1 end as population,
-	state_capital
+	tags->'state_capital'
 	  from &prefix;_point
 	  where place in ('town','large_town','small_town')
 	  and (capital is null or capital&lt;&gt;'yes')
@@ -977,7 +977,7 @@ order by population desc) as countries
            when name is null then "name:en" 
 	   when length(btrim(replace(name, "name:en", ''), '()- ')) = 0 then "name:en" 
 	   else "name:en" || E'\n(' || btrim(replace(name, "name:en", ''), '()- ') || ')' 
-      end as name, case when population > 0 then population
+      end as name, case when CAST(population as integer) &gt; 0 then CAST(population as integer)
         else -1 end as population
 	  from &prefix;_point
 	  where place in ('suburb','village','large_village','hamlet','locality')
